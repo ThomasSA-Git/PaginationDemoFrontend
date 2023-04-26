@@ -1,6 +1,6 @@
 const SERVER_URL = "http://localhost:3000/"
 
-import { paginator } from "../../lib/paginator/paginate.js"
+import { paginator } from "../../lib/paginator/paginate-bootstrap.js"
 import { sanitizeStringWithTableRows } from "../../utils.js"
 const SIZE = 10
 const TOTAL_RECORDS = 1000 //Should come from the backend
@@ -12,7 +12,7 @@ let cars = [];
 export async function load(pg, match) {
   const p = match?.params?.page || pg  //To support Navigo
   let pageNo = Number(p)
-  let queryString = ""//`?_limit=${SIZE}&_page=` + (pageNo - 1)
+  let queryString = `?_limit=${SIZE}&_page=` + (pageNo - 1);
   try {
     cars = await fetch(`${SERVER_URL}cars${queryString}`)
       .then(res => res.json())
@@ -32,7 +32,7 @@ export async function load(pg, match) {
 
 
   // (C1-2) REDRAW PAGINATION
-  /*
+  
   paginator({
     target: document.getElementById("car-paginator"),
     total: TOTAL,
@@ -40,7 +40,7 @@ export async function load(pg, match) {
     click: load
   });
 
-  */
+  
   //Update URL to allow for CUT AND PASTE when used with the Navigo Router (callHandler: false ensures the handler will not be called twice)
-  //window.router?.navigate(`/cars${queryString}`, { callHandler: false, updateBrowserURL: true })
+  window.router?.navigate(`/cars${queryString}`, { callHandler: false, updateBrowserURL: true })
 }
