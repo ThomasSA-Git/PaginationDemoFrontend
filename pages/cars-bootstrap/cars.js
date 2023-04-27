@@ -10,32 +10,45 @@ const navigoRoute = "cars-v2"
 
 let cars = [];
 
-let sortField;
+
+let sortField = "brand";
 let sortOrder = "desc"
 
-let initialized = false
 
-function handleSort(pageNo, match) {
-  sortOrder = sortOrder == "asc" ? "desc" : "asc"
-  sortField = "brand"
-  load(pageNo, match)
+function handleSort(field, pageNo, match) {
+  sortOrder = sortOrder == "asc" ? "desc" : "asc";
+  sortField = field;
+  load(pageNo, match);
 }
 
 export async function load(pg, match) {
 
-  
-  //We dont wan't to setup a new handler each time load fires
-  if (!initialized) {
+
+    document.getElementById("header-id").onclick = function (evt) {
+      evt.preventDefault()
+      handleSort("id", pageNo, match)
+    }
     document.getElementById("header-brand").onclick = function (evt) {
       evt.preventDefault()
-      handleSort(pageNo, match)
+      handleSort("brand", pageNo, match)
     }
-    initialized = true
-  }
+    document.getElementById("header-model").onclick = function (evt) {
+      evt.preventDefault()
+      handleSort("model", pageNo, match)
+    }
+    document.getElementById("header-color").onclick = function (evt) {
+      evt.preventDefault()
+      handleSort("color", pageNo, match)
+    }
+    document.getElementById("header-kilometers").onclick = function (evt) {
+      evt.preventDefault()
+      handleSort("kilometers", pageNo, match)
+    }
+
   const p = match?.params?._page || pg  //To support Navigo
   let pageNo = Number(p)
 
-  let queryString = `?size=${SIZE}&page=` + (pageNo - 1)+ `&sort=brand,${sortOrder}&sort=kilometers,desc`
+  let queryString = `?size=${SIZE}&page=` + (pageNo - 1)+ `&sort=${sortField},${sortOrder}&sort=kilometers,desc`
 
   try {
     cars = await fetch(`${SERVER_URL}cars${queryString}`)
@@ -56,7 +69,7 @@ export async function load(pg, match) {
   //DON'T forget to sanitize the string before inserting it into the DOM
   document.getElementById("tbody").innerHTML = sanitizeStringWithTableRows(rows)
 
-  const TOTAL = Math.ceil(await getCount() / SIZE)
+  const TOTAL = Math.ceil(await getCount() / SIZE) - 1;
 
   // (C1-2) REDRAW PAGINATION
   paginator({

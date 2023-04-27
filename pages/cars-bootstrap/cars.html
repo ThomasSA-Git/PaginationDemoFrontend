@@ -1,18 +1,18 @@
 <template>
   <div class="table-responsive">
-    <table class="table table-dark table-striped">
+    <table class="table table-dark table-striped table-responsive table-bordered">
       <thead>
         <tr>
-          <th>#</th>
+          <th><a id="header-id" href="">#</a></th>
           <th><a id="header-brand" href="">Brand</a></th>
-          <th>model</th>
-          <th>Color</th>
-          <th>Kilometers</th>
+          <th><a id="header-model" href="">model</a></th>
+          <th><a id="header-color" href="">Color</a></th>
+          <th><a id="header-kilometers" href="">Kilometers</a></th>
         </tr>
       </thead>
       <tbody id="tbody">
       </tbody>
     </table>
   </div>
-  <ul id="car-paginator" class="pagination pagination-lg justify-content-center" style="margin-top:10px;"></ul>
+  <ul id="car-paginator" class="pagination justify-content-center" style="margin-top:10px;"></ul>
 </template>
